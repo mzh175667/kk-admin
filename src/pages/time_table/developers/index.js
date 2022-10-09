@@ -13,7 +13,7 @@ const Developers = () => {
   const [employeesData, setEmployeesData] = useState([]);
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
-  const { employeesTimeTable, allEmployeesTimeTable, success } = useSelector(
+  const { employeesTimeTable, success } = useSelector(
     (state) => state.employeeTimeTable
   );
   console.log(employeesTimeTable);
@@ -22,25 +22,27 @@ const Developers = () => {
     if (success === true) {
       manageState();
     }
-  }, [allEmployeesTimeTable, name, date]);
+  }, [employeesTimeTable]);
   const manageState = () => {
     let developers;
-    if (name || date) {
+    if ((name && date) || name) {
       developers = employeesTimeTable.filter(
         (item) => item?.designation == "developer"
       );
-    } else {
-      developers = allEmployeesTimeTable.filter(
+    } else if (date || (!date && !name)) {
+      developers = employeesTimeTable.filter(
         (item) => item?.employeeId?.designation == "developer"
       );
     }
-    const employees_data = developers.map((data, i) => {
-      return {
-        ...data,
-        sr_no: i + 1,
-      };
-    });
-    setEmployeesData(employees_data);
+    if (developers) {
+      const employees_data = developers.map((data, i) => {
+        return {
+          ...data,
+          sr_no: i + 1,
+        };
+      });
+      setEmployeesData(employees_data);
+    }
   };
   const deleteAll = (data) => {
     const timeTable_ids = data.map((dataItem) => {
@@ -74,7 +76,7 @@ const Developers = () => {
     setDate(e.target.value);
   };
   let columns;
-  if (name || date) {
+  if ((name && date) || name) {
     columns = [
       {
         name: <b>Sr No</b>,
@@ -102,12 +104,13 @@ const Developers = () => {
       },
       {
         name: <b>CheckOut Time</b>,
-        selector: (row) => row.employeeId.checkOutTime,
+        selector: (row) =>
+          row.employeeId.checkOutTime ? row.employeeId.checkOutTime : "pending",
         sortable: true,
         reorder: true,
       },
     ];
-  } else {
+  } else if (date || (!date && !name)) {
     columns = [
       {
         name: <b>Sr No</b>,
@@ -135,7 +138,7 @@ const Developers = () => {
       },
       {
         name: <b>CheckOut Time</b>,
-        selector: (row) => row.checkOutTime,
+        selector: (row) => (row.checkOutTime ? row.checkOutTime : "pending"),
         sortable: true,
         reorder: true,
       },
@@ -150,6 +153,7 @@ const Developers = () => {
         daysHandleChange={daysHandleChange}
         date={date}
       />
+
       <Datatable
         columns={columns}
         rows={employeesData}

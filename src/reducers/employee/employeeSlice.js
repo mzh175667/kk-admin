@@ -1,31 +1,31 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { SERVER_BASE_URL } from "../../common/constants";
 import {
-  fetchDataWithBody,
   fetchDataWithBodyAndToast,
   fetchDataWithoutBody,
 } from "../../services/service";
 import axios from "axios";
-import { toUpperCase } from "../../utils/utility";
 
 const initialState = {
   loading: false,
   employee: [],
   employees: [],
   success: "",
+  successMessage: "",
   message: "",
   deleted_employees: {},
   updatedEmployee: {},
 };
 
-export const ADD_EMPLOYEE = createAsyncThunk(
+export const CREATE_EMPLOYEE = createAsyncThunk(
   "CreateNewEmployee",
   async (body) => {
     try {
-      return await fetchDataWithBodyAndToast(
+      const response = await fetchDataWithBodyAndToast(
         `${SERVER_BASE_URL}/api/employee`,
         body
       );
+      return response;
     } catch (error) {
       return error;
     }
@@ -47,7 +47,6 @@ export const UPDATE_EMPLOYEES_DATA = createAsyncThunk(
   async ({ url, body }, { dispatch }) => {
     try {
       const response = await axios.put(url, body);
-      console.log("response", response);
       if (response.data.data.success === "true") dispatch(GET_ALL_EMPLOYEES());
 
       return response.data;
@@ -62,16 +61,15 @@ export const employeeSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(ADD_EMPLOYEE.pending, (state) => {
+      .addCase(CREATE_EMPLOYEE.pending, (state) => {
         state.loading = true;
       })
-      .addCase(ADD_EMPLOYEE.fulfilled, (state, { payload }) => {
+      .addCase(CREATE_EMPLOYEE.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.success = payload.success;
-        state.message = payload.message;
-        state.employee = payload;
+        state.successMessage = payload.success;
+        state.employee = payload.data;
       })
-      .addCase(ADD_EMPLOYEE.rejected, (state) => {
+      .addCase(CREATE_EMPLOYEE.rejected, (state) => {
         state.loading = false;
       })
       .addCase(GET_ALL_EMPLOYEES.pending, (state) => {

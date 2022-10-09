@@ -21,7 +21,7 @@ const Employees = () => {
     if (success === true) {
       manageState();
     }
-  }, [employees.length, employees]);
+  }, [employees]);
   const manageState = () => {
     const employees_data = employees.map((data, i) => {
       return {

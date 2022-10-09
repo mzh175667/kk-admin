@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import ROUTES from "../../common/routes";
 import SIDEBAR_MENUES from "../../common/sidebarMenues";
-
+import kk_logo from "../../assets/images/logo/kklogo2.png";
 const Sidebar = () => {
   const isSidebarShow = useSelector(sidebarStatus);
   const dispatch = useDispatch();
@@ -99,10 +99,11 @@ const Sidebar = () => {
           <div className="d-flex justify-content-between align-items-center">
             <div className="logo">
               <Link to={ROUTES.BASE}>
-                <img
+                {/* <img
                   src="https://res.cloudinary.com/dcwobtmhv/image/upload/v1661934762/logo_xbrhvw.svg"
                   alt="Logo"
-                />
+                /> */}
+                <img src={kk_logo} alt="Logo" width="100%" height="100%" />
               </Link>
             </div>
             <div className="sidebar-toggler x">

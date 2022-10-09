@@ -7,7 +7,6 @@ const initialState = {
   employeesTimeTable: [],
   allEmployeesTimeTable: [],
   success: "",
-  searchBar: false,
   message: "",
 };
 
@@ -38,7 +37,6 @@ export const employeesTimeTableSlice = createSlice({
         state.loading = false;
         state.success = payload.success;
         state.message = payload.message;
-        state.searchBar = true;
         state.employeesTimeTable = payload.data?.timeTable;
         state.allEmployeesTimeTable = payload.data?.allData;
       })

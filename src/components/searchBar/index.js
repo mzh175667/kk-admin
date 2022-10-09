@@ -19,7 +19,7 @@ const SearchBar = ({ handleNameInput, name, daysHandleChange, date }) => {
           <option value="">Days...</option>
           {DaysOptions.map((item) => (
             <option value={item.value} key={item.key}>
-              {item.value}
+              {item.showingValue}
             </option>
           ))}
         </select>

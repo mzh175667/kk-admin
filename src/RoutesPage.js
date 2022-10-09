@@ -17,7 +17,7 @@ const Profile = lazy(() => import("./modules/auth/Profile"));
 const ChangePassword = lazy(() => import("./modules/auth/ChangePassword"));
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Employees = lazy(() => import("./pages/employees"));
-const AddEmployees = lazy(() => import("./pages/employees/AddEmployee"));
+const CreateEmployees = lazy(() => import("./pages/employees/CreateEmployee"));
 const EditEmployee = lazy(() => import("./pages/employees/EditEmployee"));
 const Developers = lazy(() => import("./pages/time_table/developers/index"));
 const Internees = lazy(() => import("./pages/time_table/internees/index"));
@@ -63,7 +63,7 @@ export default function RoutesPage() {
             />
             {/* Employees Routes */}
             <Route path={ROUTES.EMPLOYEES.BASE} element={<Employees />} />
-            <Route path={ROUTES.EMPLOYEES.ADD} element={<AddEmployees />} />
+            <Route path={ROUTES.EMPLOYEES.ADD} element={<CreateEmployees />} />
             <Route
               path={ROUTES.EMPLOYEES.UPDATE.PARAM}
               element={<EditEmployee />}

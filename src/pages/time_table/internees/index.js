@@ -6,23 +6,34 @@ import { GET_ALL_EMPLOYEES } from "../../../reducers/employee/employeeSlice";
 import { Toast } from "../../../helpers/sweetAlert";
 import { SERVER_BASE_URL } from "../../../common/constants";
 import { deleteDataFromBody } from "../../../services/service";
+import { GET_ALL_EMPLOYEES_TIME_TABLE } from "../../../reducers/timeTable/timeTableSlice";
 import SearchBar from "../../../components/searchBar";
 const Internees = () => {
   const dispatch = useDispatch();
   const [employeesData, setEmployeesData] = useState([]);
-  const { employeesTimeTable, success } = useSelector(
-    (state) => state.employee
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const { employeesTimeTable, allEmployeesTimeTable, success } = useSelector(
+    (state) => state.employeeTimeTable
   );
+  console.log(employeesTimeTable);
   useEffect(() => {
-    dispatch(GET_ALL_EMPLOYEES());
+    dispatch(GET_ALL_EMPLOYEES_TIME_TABLE({ name, date }));
     if (success === true) {
       manageState();
     }
-  }, [employeesTimeTable.length]);
+  }, [employeesTimeTable]);
   const manageState = () => {
-    const internees = employeesTimeTable.filter(
-      (item) => item.designation == "internee"
-    );
+    let internees;
+    if ((name && date) || name) {
+      internees = employeesTimeTable.filter(
+        (item) => item?.designation == "internee"
+      );
+    } else if (date || (!date && !name)) {
+      internees = employeesTimeTable.filter(
+        (item) => item?.employeeId?.designation == "internee"
+      );
+    }
     const employees_data = internees.map((data, i) => {
       return {
         ...data,
@@ -32,11 +43,11 @@ const Internees = () => {
     setEmployeesData(employees_data);
   };
   const deleteAll = (data) => {
-    const employee_ids = data.map((dataItem) => {
+    const timeTable_ids = data.map((dataItem) => {
       return dataItem._id;
     });
     const body = {
-      employee_ids: employee_ids,
+      timeTable_ids: timeTable_ids,
     };
     const url = `${SERVER_BASE_URL}/api/timeTable`;
     return deleteDataFromBody(url, body).then((response) => {
@@ -56,42 +67,90 @@ const Internees = () => {
       }
     });
   };
-  const columns = [
-    {
-      name: <b>Sr No</b>,
-      selector: (row) => row.sr_no,
-      sortable: true,
-      reorder: true,
-    },
-    {
-      name: <b>Name</b>,
-      selector: (row) => row.name,
-      sortable: true,
-      reorder: true,
-    },
-    {
-      name: <b>Email</b>,
-      selector: (row) => row.email,
-      sortable: true,
-      reorder: true,
-    },
-    {
-      name: <b>Designation</b>,
-      selector: (row) => row.designation,
-      sortable: true,
-      reorder: true,
-    },
-    {
-      name: <b>Pin</b>,
-      selector: (row) => row.pin,
-      sortable: true,
-      reorder: true,
-    },
-  ];
+  const handleNameInput = (e) => {
+    setName(e.target.value);
+  };
+  const daysHandleChange = (e) => {
+    setDate(e.target.value);
+  };
+  let columns;
+  if ((name && date) || name) {
+    columns = [
+      {
+        name: <b>Sr No</b>,
+        selector: (row) => row.sr_no,
+        sortable: true,
+        reorder: true,
+      },
+      {
+        name: <b>Name</b>,
+        selector: (row) => row.name,
+        sortable: true,
+        reorder: true,
+      },
+      {
+        name: <b>Date</b>,
+        selector: (row) => row.employeeId.date,
+        sortable: true,
+        reorder: true,
+      },
+      {
+        name: <b>CheckIn Time</b>,
+        selector: (row) => row.employeeId.checkInTime,
+        sortable: true,
+        reorder: true,
+      },
+      {
+        name: <b>CheckOut Time</b>,
+        selector: (row) =>
+          row.employeeId.checkOutTime ? row.employeeId.checkOutTime : "pending",
+        sortable: true,
+        reorder: true,
+      },
+    ];
+  } else if (date || (!date && !name)) {
+    columns = [
+      {
+        name: <b>Sr No</b>,
+        selector: (row) => row.sr_no,
+        sortable: true,
+        reorder: true,
+      },
+      {
+        name: <b>Name</b>,
+        selector: (row) => row.employeeId.name,
+        sortable: true,
+        reorder: true,
+      },
+      {
+        name: <b>Date</b>,
+        selector: (row) => row.date,
+        sortable: true,
+        reorder: true,
+      },
+      {
+        name: <b>CheckIn Time</b>,
+        selector: (row) => row.checkInTime,
+        sortable: true,
+        reorder: true,
+      },
+      {
+        name: <b>CheckOut Time</b>,
+        selector: (row) => (row.checkOutTime ? row.checkOutTime : "pending"),
+        sortable: true,
+        reorder: true,
+      },
+    ];
+  }
 
   return (
     <>
-      <SearchBar />
+      <SearchBar
+        handleNameInput={handleNameInput}
+        name={name}
+        daysHandleChange={daysHandleChange}
+        date={date}
+      />
       <Datatable
         columns={columns}
         rows={employeesData}

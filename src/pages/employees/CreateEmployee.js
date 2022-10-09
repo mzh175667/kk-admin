@@ -1,16 +1,20 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../common/routes";
 import BackButton from "../../components/back_button/BackButton";
 import { useDispatch, useSelector } from "react-redux";
-import { ADD_EMPLOYEE } from "../../reducers/employee/employeeSlice";
+import { CREATE_EMPLOYEE } from "../../reducers/employee/employeeSlice";
 
 const AddCategory = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [designation, setDesignation] = useState("");
-  const { success, message, loading } = useSelector((state) => state.employee);
+  const { successMessage, employee, loading } = useSelector(
+    (state) => state.employee
+  );
+
+  console.log(successMessage, employee);
   const {
     register,
     handleSubmit,
@@ -23,8 +27,8 @@ const AddCategory = () => {
       email: data.email,
       designation: designation,
     };
-    dispatch(ADD_EMPLOYEE(body));
-    if (success) {
+    dispatch(CREATE_EMPLOYEE(body));
+    if (successMessage) {
       navigate(ROUTES.EMPLOYEES.BASE);
     }
   };

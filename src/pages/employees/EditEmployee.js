@@ -5,11 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ROUTES from "../../common/routes";
 import BackButton from "../../components/back_button/BackButton";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GET_ALL_EMPLOYEES,
-  GET_SINGLE_EMPLOYEE,
-  UPDATE_EMPLOYEES_DATA,
-} from "../../reducers/employee/employeeSlice";
+import { UPDATE_EMPLOYEES_DATA } from "../../reducers/employee/employeeSlice";
 import { fetchDataWithoutBody } from "../../services/service";
 
 const EditCategory = () => {

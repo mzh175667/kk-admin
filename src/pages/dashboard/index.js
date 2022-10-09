@@ -8,19 +8,14 @@ import Statistics from "./Statistics";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { employees } = useSelector((state) => state.employee);
-  const [sum, setSum] = useState({
-    sellers: 0,
-    buyers: 0,
-    categories: 0,
-    services: 0,
-  });
   let developer, intrnees;
 
   useEffect(() => {
     dispatch(GET_ALL_EMPLOYEES());
   }, []);
   developer = employees.filter((item) => item.designation == "developer");
-  intrnees = employees.filter((item) => item.designation == "intrnees");
+
+  intrnees = employees.filter((item) => item.designation == "internee");
 
   const statistics = [
     {
@@ -28,21 +23,21 @@ const Dashboard = () => {
       sum: employees.length,
       icon: "iconly-boldProfile",
       icon_color: "green",
-      url: ROUTES.BASE,
+      url: ROUTES.EMPLOYEES.BASE,
     },
     {
       text: "Developers",
       sum: developer.length,
       icon: "iconly-boldProfile",
       icon_color: "blue",
-      url: ROUTES.BASE,
+      url: ROUTES.TIME_TABLE.DEVELOPERS.BASE,
     },
     {
       text: "Internees",
       sum: intrnees.length,
       icon: "iconly-boldProfile",
       icon_color: "green",
-      url: ROUTES.BASE,
+      url: ROUTES.TIME_TABLE.INTERNEES.BASE,
     },
   ];
 

@@ -1,21 +1,47 @@
 import axios from "axios";
 import { Toast } from "../helpers/sweetAlert";
 
+// export const fetchDataWithBodyAndToast = async (url, body) => {
+//   try {
+//     const response = await axios.post(url, body);
+//     console.log(response.data);
+//     if (response.data.success === true) {
+//       Toast.fire({
+//         icon: "success",
+//         title: response.data.message,
+//       });
+//     } else {
+//       Toast.fire({
+//         icon: "error",
+//         title: response.data.message,
+//       });
+//     }
+//     return response;
+//   } catch (error) {
+//     return error;
+//   }
+// };
 export const fetchDataWithBodyAndToast = async (url, body) => {
   try {
-    const response = await axios.post(url, body);
-    if (response.data.success === true) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }).then((res) => res.json());
+    if (response?.success === true) {
       Toast.fire({
         icon: "success",
-        title: response.data.message,
+        title: response?.message,
       });
     } else {
       Toast.fire({
         icon: "error",
-        title: response.data.message,
+        title: response?.message,
       });
     }
-    return response.data;
+    return response;
   } catch (error) {
     return error;
   }
