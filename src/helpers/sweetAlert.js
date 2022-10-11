@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-const ConfirmSweetAlert = (confirmBtnText) => {
+const ConfirmSweetAlert = (confirmBtnText, employee) => {
   return Swal.fire({
     title: "Are you sure?",
     icon: "warning",

@@ -27,7 +27,6 @@ const VerifyOtp = () => {
     const url = `${SERVER_BASE_URL}api/admin/verify-otp`;
     fetchDataWithBody(url, body)
       .then((response) => {
-        console.log(response);
         if (response.success === true) {
           setLoading(false);
           Toast.fire({
@@ -59,7 +58,6 @@ const VerifyOtp = () => {
     const url = `${SERVER_BASE_URL}api/admin/resend-otp`;
     fetchDataWithBody(url, body)
       .then((response) => {
-        console.log(response);
         if (response.success === true) {
           Toast.fire({
             icon: "success",

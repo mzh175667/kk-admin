@@ -79,7 +79,7 @@ export const employeeSlice = createSlice({
         state.loading = false;
         state.success = payload.success;
         state.message = payload.message;
-        state.employees = payload.data;
+        state.employees = payload.data.employee;
       })
       .addCase(GET_ALL_EMPLOYEES.rejected, (state) => {
         state.loading = false;

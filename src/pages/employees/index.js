@@ -9,11 +9,12 @@ import { GET_ALL_EMPLOYEES } from "../../reducers/employee/employeeSlice";
 import { Toast } from "../../helpers/sweetAlert";
 import { SERVER_BASE_URL } from "../../common/constants";
 import { deleteDataFromBody } from "../../services/service";
+import { CircularProgress } from "@material-ui/core";
 
 const Employees = () => {
   const dispatch = useDispatch();
   const [employeesData, setEmployeesData] = useState([]);
-  const { employees, success, message } = useSelector(
+  const { employees, success, loading } = useSelector(
     (state) => state.employee
   );
   useEffect(() => {
@@ -21,7 +22,8 @@ const Employees = () => {
     if (success === true) {
       manageState();
     }
-  }, [employees]);
+  }, [employees.length]);
+
   const manageState = () => {
     const employees_data = employees.map((data, i) => {
       return {
@@ -31,7 +33,6 @@ const Employees = () => {
     });
     setEmployeesData(employees_data);
   };
-
   const columns = [
     {
       name: <b>Sr No</b>,
@@ -103,13 +104,21 @@ const Employees = () => {
     });
   };
   return (
-    <Datatable
-      columns={columns}
-      rows={employeesData}
-      addBtnUrl={ROUTES.EMPLOYEES.ADD}
-      delFunction={deleteAll}
-      selectable={true}
-    />
+    <>
+      {!loading ? (
+        <Datatable
+          columns={columns}
+          rows={employeesData}
+          addBtnUrl={ROUTES.EMPLOYEES.ADD}
+          delFunction={deleteAll}
+          selectable={true}
+        />
+      ) : (
+        <div className="d-flex justify-content-center mt-5">
+          <CircularProgress color="primary" />
+        </div>
+      )}
+    </>
   );
 };
 

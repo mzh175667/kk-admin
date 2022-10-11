@@ -9,14 +9,13 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { employees } = useSelector((state) => state.employee);
   let developer, intrnees;
-
   useEffect(() => {
     dispatch(GET_ALL_EMPLOYEES());
   }, []);
-  developer = employees.filter((item) => item.designation == "developer");
-
-  intrnees = employees.filter((item) => item.designation == "internee");
-
+  if (employees) {
+    developer = employees.filter((item) => item.designation == "developer");
+    intrnees = employees.filter((item) => item.designation == "internee");
+  }
   const statistics = [
     {
       text: "Employees",

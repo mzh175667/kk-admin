@@ -13,6 +13,7 @@ const EditCategory = () => {
   const dispatch = useDispatch();
   const [designation, setDesignation] = useState("");
   const [designationValidation, setDesignationValidation] = useState(false);
+  const [response, setResponse] = useState("");
 
   const { id } = useParams();
   const { success, loading } = useSelector((state) => state.employee);
@@ -28,8 +29,9 @@ const EditCategory = () => {
     fetchDataWithoutBody(url).then((response) => {
       if (response.success === true) {
         let defaultValues = {};
-        defaultValues.employee_name = response.data.name;
-        defaultValues.designation = response.data.designation;
+        setResponse(response.data.employee.designation);
+        defaultValues.employee_name = response.data.employee.name;
+        // defaultValues.designation = response.data.employee.designation;
         reset({ ...defaultValues });
       }
     });
@@ -88,7 +90,7 @@ const EditCategory = () => {
           </select>
           {(errors.designation || designation == "") &&
           designationValidation ? (
-            <p className="validation-error">Designation is required</p>
+            <p className="validation-error">designation is required</p>
           ) : (
             ""
           )}

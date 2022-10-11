@@ -33,7 +33,6 @@ const ResetPassword = () => {
     const url = `${SERVER_BASE_URL}api/admin/reset-password`;
     fetchDataWithBody(url, body)
       .then((response) => {
-        console.log(response);
         if (response.success === true) {
           setLoading(false);
           Toast.fire({

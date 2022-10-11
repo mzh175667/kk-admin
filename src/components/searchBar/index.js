@@ -1,5 +1,5 @@
 import React from "react";
-const SearchBar = ({ handleNameInput, name, daysHandleChange, date }) => {
+const SearchBar = ({ handleNameInput, name, handleDaysChange, date }) => {
   const DaysOptions = [
     { key: "1", value: "1", showingValue: "1 day" },
     { key: "7", value: "7", showingValue: "1 week" },
@@ -14,7 +14,7 @@ const SearchBar = ({ handleNameInput, name, daysHandleChange, date }) => {
         <select
           className="form-select mt-2"
           value={date}
-          onChange={daysHandleChange}
+          onChange={handleDaysChange}
         >
           <option value="">Days...</option>
           {DaysOptions.map((item) => (

@@ -10,11 +10,15 @@ const AddCategory = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [designation, setDesignation] = useState("");
-  const { successMessage, employee, loading } = useSelector(
+  const [designationValidation, setDesignationValidation] = useState(false);
+  const { successMessage, employee, employees, loading } = useSelector(
     (state) => state.employee
   );
+  console.log(employees);
+  // useEffect(() => {
+  //   if (employees && employee && successMessage) employees.insert(0, employee);
+  // }, [employee.length]);
 
-  console.log(successMessage, employee);
   const {
     register,
     handleSubmit,
@@ -22,16 +26,23 @@ const AddCategory = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setDesignationValidation(true);
     const body = {
       name: data.employee_name,
       email: data.email,
       designation: designation,
     };
     dispatch(CREATE_EMPLOYEE(body));
-    if (successMessage) {
-      navigate(ROUTES.EMPLOYEES.BASE);
+
+    if (employee && successMessage && designation) {
+      setDesignationValidation(false);
     }
   };
+  useEffect(() => {
+    if (employee && successMessage && designation) {
+      navigate(ROUTES.EMPLOYEES.BASE);
+    }
+  }, [employee, successMessage]);
   const designationHandleChange = (e) => {
     setDesignation(e.target.value);
   };
@@ -83,6 +94,12 @@ const AddCategory = () => {
             <option value="developer">developer</option>
             <option value="internee">internee</option>
           </select>
+          {(errors.designation || designation == "") &&
+          designationValidation ? (
+            <p className="validation-error">designation is required</p>
+          ) : (
+            ""
+          )}
         </div>
         <div className="col-sm-12 d-flex justify-content-end">
           {loading === true ? (
